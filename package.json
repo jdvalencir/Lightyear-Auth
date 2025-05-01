@@ -1,0 +1,28 @@
+{
+  "name": "lightyear-auth",
+  "version": "1.0.0",
+  "description": "Lightyear Auth is a service designed to authenticate users through a simplified flow. It handles email-based authentication by validating credentials with Firebase and managing the session logic. This service is part of a microservices architecture and communicates with other services",
+  "keywords": [
+    "Auth",
+    "Firebase",
+    "RabbitMQ"
+  ],
+  "license": "ISC",
+  "author": "Marcianos Team",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.7",
+    "axios": "^1.8.4",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "firebase": "^11.6.1",
+    "firebase-admin": "^13.2.0",
+    "winston": "^3.17.0"
+  }
+}

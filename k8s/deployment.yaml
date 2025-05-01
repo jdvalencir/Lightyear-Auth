@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lightyear-auth
+  labels:
+    app: lightyear-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lightyear-auth
+  template:
+    metadata:
+      labels:
+        app: lightyear-auth
+    spec:
+      containers:
+      - name: lightyear-auth
+        image: julianv08/lightyear-auth:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+        - name: FIREBASE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: my-firebase
+              key: firebase-api-key
+        - name: FIREBASE_AUTH_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              name: my-firebase
+              key: firebase-auth-domain
+        - name: FIREBASE_PROJECT_ID
+          valueFrom:
+            secretKeyRef:
+              name: my-firebase
+              key: firebase-project-id
+        - name: FIREBASE_STORAGE_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: my-firebase
+              key: firebase-storage-bucket
+        - name: FIREBASE_MESSAGING_SENDER_ID
+          valueFrom:
+            secretKeyRef:
+              name: my-firebase
+              key: firebase-messaging-sender-id
+        - name: FIREBASE_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: my-firebase
+              key: firebase-app-id
+        - name: RMQ_USER
+          value: "marciano"
+        - name: RMQ_PASS
+          valueFrom:
+            secretKeyRef:
+              name: my-rabbitmq
+              key: rabbitmq-password
+        - name: RMQ_HOST
+          value: "my-rabbitmq"
+        - name: RMQ_PORT
+          value: "5672"
+        resources:
+          limits:
+            cpu: "50m"
+            memory: "100Mi"
+          requests:
+            cpu: "50m"
+            memory: "100Mi"
