@@ -11,7 +11,7 @@ env:
   GKE_ZONE: us-central1-a  # cluster zone
   IMAGE_NAME: lightyear-auth # image name
   DEPLOYMENT_NAME: lightyear-auth # deployment name
-  NAMESPACE: rabbitmq-ns
+  NAMESPACE: lightyear-auth
 
 jobs:
   generate-version:
