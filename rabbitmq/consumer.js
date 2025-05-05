@@ -70,7 +70,7 @@ class RabbitMQConsumer {
                         logger.error(`Error sending password reset email to ${email}:`, error)
                     }
 
-                    const url = `http://mrpotato-adapter-service.mrpotato-adapter.svc.local/v1/adapter/registerCitizen`
+                    const url = `http://mrpotato-adapter-service.mrpotato-adapter.svc.cluster.local/v1/adapter/registerCitizen`
 
                     const body = {
                         id: data.id,
