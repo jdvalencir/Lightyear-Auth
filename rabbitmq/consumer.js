@@ -2,6 +2,7 @@ import amqp from 'amqplib'
 import { sendPasswordResetEmail, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../config/firebase.config.js'
 import crypto from 'crypto'; // Import the crypto module
+import axios from 'axios';
 
 import { getLogger } from '../logger/logger.js'
 
@@ -51,6 +52,7 @@ class RabbitMQConsumer {
                       .filter(Boolean)
                       .join(' ')
 
+
                     logger.info(`Received message email: ${email}, fullName: ${fullName}`)
 
                     // Generate a temporary random password
@@ -68,11 +70,34 @@ class RabbitMQConsumer {
                         logger.error(`Error sending password reset email to ${email}:`, error)
                     }
 
+                    const url = `http://mrpotato-adapter-service.mrpotato-adapter.svc.local/v1/adapter/registerCitizen`
+
+                    const body = {
+                        id: data.id,
+                        name: fullName,
+                        address: data.address,
+                        email: email,
+                        operatorId: "681466aaedee130015720b44",
+                        operatorName: "Operador Marcianos"
+                    }
+
+                    const headers = {
+                        'Content-Type': 'application/json',
+                    }
+
+                    const response = await axios.post(url, body, { headers })
+                    
+                    if (response.data && response.status === 201 && response.data.registered) {
+                        logger.info(`Citizen registered successfully: ${response.data.registered}`)
+                    } else {
+                        logger.error(`Failed to register citizen: ${response.status} - ${response.statusText}`)
+                        throw new Error(`Failed to register citizen: ${response.status} - ${response.statusText}`)
+                    }
                     this.channel.ack(msg)
                 } catch (error) {
                     // Log the specific Firebase error if available
                     if (error.code && error.message) {
-                         logger.error(`Firebase Error (${error.code}):`, error.message);
+                         logger.error(`Firebase Error (${error.code}): ${error.message}`);
                     } else {
                         logger.error('Error processing message:', error)
                     }

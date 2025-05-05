@@ -14,9 +14,9 @@ if (process.env.NODE_ENV === 'development') {
   process.loadEnvFile('.env');
 }
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3000
 
-app.post('/login', async (req, res) => {
+app.post('/v1/users/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {

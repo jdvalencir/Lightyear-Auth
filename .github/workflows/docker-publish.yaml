@@ -73,8 +73,8 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        kubectl set image deployment/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=julianv08/${{ env.IMAGE_NAME }}:${{ needs.generate-version.outputs.new_tag }} -n ${{ env.NAMESPACE }}
-        kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/deployment.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/service.yaml -n ${{ env.NAMESPACE }}
     - name: Check deployment success
       run: |
         while [[ $(kubectl get deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }} -o 'jsonpath={..status.conditions[?(@.type=="Available")].status}') != "True" ]]; do sleep 5; done
