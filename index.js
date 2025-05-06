@@ -3,6 +3,7 @@ import { rabbitMQConsumer } from './rabbitmq/consumer.js'
 import { auth } from './config/firebase.config.js'
 import express from 'express'
 import { getLogger } from './logger/logger.js'
+import cors from "cors";
 
 const app = express()
 
