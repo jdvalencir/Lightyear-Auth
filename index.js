@@ -7,6 +7,7 @@ import { getLogger } from './logger/logger.js'
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 const logger = getLogger()
 
