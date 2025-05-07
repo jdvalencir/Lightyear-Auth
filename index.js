@@ -20,16 +20,23 @@ if (process.env.NODE_ENV === "development") {
 const port = process.env.PORT || 3000;
 
 app.get("/v1/users/me", async (req, res) => {
-  console.log("Headers:", req.headers);
-  const id = req.headers["x-user-uid"];
-  console.log("User ID from header:", id);
-  if (!id) {
-    return res.status(401).json({ error: "Unauthorized" });
+  const authHeader = req.headers["authorization"];
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Missing or invalid token" });
   }
+
+  const token = authHeader.split(" ")[1];
+  const decoded = jwt.decode(token);
+
+  const userId = decoded?.user_id || decoded?.sub;
+  console.log("User ID from token:", userId);
+
+  if (!userId) {
+    return res.status(401).json({ error: "User ID not found in token" });
+  }
+
   try {
-    const user = await User.findOne({
-      where: { id: id },
-    });
+    const user = await User.findOne({ where: { id: userId } });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
