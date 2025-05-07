@@ -51,17 +51,21 @@ spec:
             secretKeyRef:
               name: my-firebase
               key: FIREBASE_APP_ID
-        - name: RMQ_USER
-          value: "marciano"
-        - name: RMQ_PASS
+        - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: my-rabbitmq
-              key: rabbitmq-password
-        - name: RMQ_HOST
-          value: "my-rabbitmq.rabbitmq-ns.svc.cluster.local"
-        - name: RMQ_PORT
-          value: "5672"
+              name: my-db
+              key: DB_USER
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: my-db
+              key: DB_PASS
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: my-db
+              key: DB_HOST
         resources:
           limits:
             cpu: "50m"
