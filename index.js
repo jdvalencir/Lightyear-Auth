@@ -20,6 +20,11 @@ if (process.env.NODE_ENV === "development") {
 
 const port = process.env.PORT || 3000;
 
+app.get("/v1/users/all", async (req, res) => {
+  const users = await User.findAll();
+  res.json(users);
+});
+
 app.get("/v1/users/me", async (req, res) => {
   const authHeader = req.headers["authorization"];
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -109,7 +114,6 @@ app.listen(port, async () => {
   try {
     await sequelize.authenticate();
     logger.info("Database connection has been established successfully.");
-    await sequelize.sync({ force: true })
     logger.info("Database synchronized successfully.");
   } catch (error) {
     logger.error("Unable to connect to the database:", error);
