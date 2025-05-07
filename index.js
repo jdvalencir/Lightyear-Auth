@@ -5,6 +5,7 @@ import { User } from "./models/User.js";
 import { auth } from "./config/firebase.config.js";
 import express from "express";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 
 const app = express();
 
@@ -108,6 +109,7 @@ app.listen(port, async () => {
   try {
     await sequelize.authenticate();
     logger.info("Database connection has been established successfully.");
+    await sequelize.sync({ force: true })
     logger.info("Database synchronized successfully.");
   } catch (error) {
     logger.error("Unable to connect to the database:", error);

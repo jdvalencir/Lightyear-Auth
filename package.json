@@ -24,6 +24,7 @@
     "express": "^5.1.0",
     "firebase": "^11.6.1",
     "firebase-admin": "^13.2.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.15.6",
     "sequelize": "^6.37.7",
     "winston": "^3.17.0"
