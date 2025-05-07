@@ -51,6 +51,8 @@ spec:
             secretKeyRef:
               name: my-firebase
               key: FIREBASE_APP_ID
+        - name: DB_NAME
+          value: "marcianos"
         - name: DB_USER
           valueFrom:
             secretKeyRef:
